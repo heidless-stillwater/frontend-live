@@ -1,0 +1,8 @@
+pfolio-backend-deploy-2-d2290096b8e5.json
+pfolio-frontend-deploy-2-de402fb12d53.json
+pfolio-frontend-0-e35657a777cf.json
+pfolio-key.base64
+pfolio-key*.*
+node_modules
+.next/*
+venv
