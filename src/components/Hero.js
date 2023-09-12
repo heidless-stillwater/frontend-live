@@ -179,7 +179,7 @@ const Hero = () => {
                                         >
                                             <Box 
                                                 component={LazyLoadImage}
-                                                src='https://storage.cloud.google.com/pfolio-frontend-bucket-0/images/backgroud.jpg'
+                                                src='https://storage.cloud.google.com/pfolio-frontend-bucket-0/images/background.png'
                                                 alt='Background Image'
                                                 effect='blur'
                                                 height={{ xs: 'auto', md: 1 }}
