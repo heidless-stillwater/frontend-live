@@ -1,3 +1,20 @@
+# wordpress credentials
+## project: cloud-run-install
+Site address
+http://34.105.193.65/wordpress 
+Admin URL
+http://34.105.193.65/wp-admin 
+Admin user
+user
+Admin password (Temporary)
+L7bYoNYzmTmt
+Instance
+sdsh-wordpress-1-vm
+Instance zone
+europe-west2-a
+Instance machine type
+e2-micro
+
 
 # Deploy a React Web Application to Google Cloud
 https://www.youtube.com/watch?v=IjUnQ9kMnVo
