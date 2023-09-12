@@ -114,6 +114,16 @@ const Hero = () => {
                                     </Box>
                                     <HeroButtons />
                                 </Box>
+                                <Box>
+                                        <Typography
+                                            variant='h6'
+                                            component='p'
+                                            color={theme.palette.text.secondary}
+                                            align='justify'
+                                        >
+                                            Just in case: S.M.A.R.T = Specific, Measurable, Achievable, Realistic, Time-based. 
+                                        </Typography>
+                                </Box>
                             </Container>
                         </Box>
                         <Box
