@@ -1,136 +1,85 @@
+
 # Deploy a React Web Application to Google Cloud
 https://www.youtube.com/watch?v=IjUnQ9kMnVo
 
-### current LIVE
+## Access app
+### https://pf-frontend-svc-0-tr6lwdigpa-ew.a.run.app
 
-### github
-https://github.com/heidless-stillwater/frontend-live
+## setup
 
-### vsCode
+### package.json
 
-
-### Access app
-### https://pfolio-frontend-service-7dd5pbcoiq-nw.a.run.app/
-
-### run locally
 ```
-# set to development
-
+# ensure 'start' references $PORT
+# allows cloud run to manage random PORT
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -- --port 3000"
+  },
+  
 # test by specifying port
-npm install
 npm run build
 npm start 5000
 ```
----
-## Cloud Run
 
-### .env.production
-```
-BACKEND_HOST=pfolio-release-0.ew.r.appspot.com
-BACKEND_URL=https://pfolio-release-0.ew.r.appspot.com/
-```
 
-### gCloud config
+## docker
+### Dockerfile
 ```
-gcloud config set account ambientuplift@gmail.com
-gcloud init
-- create new config
-	- frontend-live
-- log in with new account
-	- ambientuplift@gmail.com
-		- <PWD>
-```
+vi Dockerfile
+# base image
+FROM node:16.15.1-alpine
 
-### set/create projects
-```
-<new project>->pfolio-frontend-0
+# Create and change to the app directory.
+WORKDIR /usr/app
 
-# cli: specify project
-gcloud config set project pfolio-release-0
+COPY . .
+
+# Install production dependencies.
+
+# use 'clean install' (ci)
+RUN npm ci --only=production
+
+RUN npm run build
+
+CMD ["npm", "start"]
 ```
 
-### storage bucket
+### build | run
+```
+docker build . -t pfolio-frontend
+docker run -p 3000:3000 -e=PORT=3000 pfolio-frontend
+```
+
+## storage bucket
 ```
 # project
-pfolio-frontend-bcket-0
+pfolio-frontend-deploy-0
 
 # storage bucket
 'Cloud Storage'
 -
-NAME: pfolio-frontend-bucket-0
-REGION: europe-west1
-STORAGE CLASS: default->standard
-ACCESS:
-	- check Enforce public access prevention on this bucket
-	- 'Uniform'
+frontend-bucket-0
 -
-PROTECTION: none
-
-# make image publicly accessible
-https://www.youtube.com/watch?v=PoVbGE0HrRA&t=1s
-- 
-ACCESS CONTROL -> Fine Grained
-PUBLIC ACCESS -> Subject to object ACLs
--
-CLOUD STORAGE->pfolio-bucket-0->images
-# within bucket
-- <image>->'3 dots'->Edit Access->
-Entity 1: Public
-Name 1: allUsers
-access 1: Reader
--
+```
 
 
+## Cloud Run
+
+## push to repository
+```
+gcloud builds submit --tag gcr.io/pfolio-deploy-1/pfolio-frontend .
+
+## create Serice
+-> deploy uploaded Container Registry
+-> i.e  NOT continuous deployment
 
 ```
 
-### create service
-```
-PROJECT: pfolio-live
-
-'Cloud Run'->Create Service
-- Select Continuously deploy new revisions from a source repository
-	'Cloud Build'
-		'Source Repository'
-			GIT: heidless-stillwater/frontend-live
-		'Build Configuration'
-			BRANCH: ^master$
-			DOCKERFILE: /Dockerfile
-
-SERVICE NAME: pf-frontend-svc-0
-REGION: europe-west1
-Allow direct access to your service from the Internet
-AUTHENTICATION: Allow unauthenticated invocations
-```
-The creates the service & configures Git Triggers to automatically re-deploy on Commit of Project
-
-### service account
-```
-'IAM & ADMIN'->Service Accounts->Create Service Account
-
-NAME: frontend-svcaccount-0
-DESC: service account for github actions
-ROLES:
-Editor
-Cloud Run Admin
-Storage Admin
-Service Account User
-'CONTINUE'->DONE'
-```
-
-### service account key
-```
-'Service Accounts'->pf-backend-svcaccount-0->
-'3 dots'->Manage Keys->Add Key->JSON
-
-# json key file - automatically downloads to your local machine
-i.e. Downloads/pfolio-frontend-0-d2290096b8e5.json
-
-# copy to project root dir
-i.e. pfolio-backend-deploy-0-380215-8f9cc9423783.json
-```
 
 ### github secrets
+FIGURE out continuous deployment
 ```
 # encode service account key
 base64 -i pfolio-backend-deploy-2-d2290096b8e5.json > pfolio-key.base64
@@ -145,18 +94,119 @@ NAME: FRONTEND_WEST1_SECRET
 -
 ```
 
-### local config
-Whenever working from local install using Cloud Run assets.
-Configure ENV
+### configure
 ```
-CLOUD_RUN_PROJECT_NAME=pfolio-backend-deploy-2
-CLOUD_RUN_SERVICE_ACCOUNT=`base64 -i pfolio-backend-deploy-2-d2290096b8e5.json`
+https://console.cloud.google.com/run/create?enableapi=true&authuser=0&hl=en_GB&project=pfolio-backend-deploy-0-380215
+
+'Cloud Run'->Create Service
+-
+pfolio-frontend-service
+'Setup Cloud Build'
+< pick repository >
+'save'
+-
+
+# register container
+'Container Registry'-> enable if not already done so
+
+# service account
+'IAM & ADMIN'->Service Accounts
+-
+NAME: pfolio-frontend-svcaccount
+DESC: service account for github actions
+ROLES:
+Editor
+Cloud Run Admin
+Storage Admin
+Service Account User
+'DONE'
+
+# newly created instance
+'Service Accounts'->pfolio-frontend-svcaccount->
+'3 dots'->Manage Keys->Add Key->JSON
+
+# keyfile auto downloads
+# copy to project root dir
+i.e. pfolio-backend-deploy-0-380215-8f9cc9423783.json
+
+# enable Registry API - IF NEEDED
+'Container Registery'-'enable'
+
+# ename Cloud Run API - if NECESSARY
+'Cloud Run API'->'enable'
+
 ```
 
-
-### now trigger a build to confirm success/failure
+## configure github workflows
 ```
-touch TEST
-commit & sync
+# in project root dir
+vi .github/workflows/cloud-run.yml
+-
+europ-west2
+-
+
+# refresh gitub
+git add .
+git commit -m "added .github structure"
+
+# github secrets
+# encode service account key
+i.e.base64 -i pfolio-backend-deploy-0-380215-8f9cc9423783.json
+
+<github repository>->Settings->Secrets & Variables->Actions
+'New Repository Secret'
+-
+CLOUD_RUN_PROJECT_NAME=pfolio-frontend-deploy-0
+CLOUD_RUN_SERVICE_ACCOUNT=`base64 -i pfolio-backend-deploy-0-380215-8f9cc9423783.json`
+-
+
+# now trigger a build to confirm success/failure
+<github repository>->Actions-><workflow of interest>
 ```
 
+## refresh install of SDK
+https://cloud.google.com/sdk/docs/install#deb
+```
+sudo apt-get install apt-transport-https ca-certificates gnupg
+
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+sudo apt-get update && sudo apt-get install google-cloud-cli
+
+```
+
+## Cloud Run: enable permissions
+```
+'Cloud Run'-><app service>->Triggers->Allow Unauthenticated invocations
+
+gcloud run services add-iam-policy-binding nextjs-test \
+    --member="allUsers" \
+    --role="roles/run.invoker"
+```
+
+## continuous deployment
+```
+'Cloud Run'->Service Details->Setup Continuous Deployment
+-
+'Enable Cloud Build API'
+<set repository>
+-
+```
+
+## access frontend app
+```
+PROJECT: pfolio-frontend-deploy-0->Cloud Run->pfolio-frontend-service
+```
+https://pfolio-frontend-service-7dd5pbcoiq-nw.a.run.app
+
+
+## backups
+### frontend
+```
+STORAGE BUCKET: pfolio-frontend-deploy-0->'Cloud Storage'
+-
+frontend-bucket-0
+-
+```
