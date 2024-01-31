@@ -55,7 +55,7 @@ docker run -p 3000:3000 -e=PORT=3000 pfolio-frontend
 ## storage bucket
 ```
 # project
-pfolio-frontend-deploy-0
+heidless-pfolio-deploy
 
 # storage bucket
 'Cloud Storage'
@@ -69,13 +69,21 @@ frontend-bucket-0
 
 ## push to repository
 ```
-gcloud builds submit --tag gcr.io/pfolio-deploy-1/pfolio-frontend .
+gcloud builds submit --tag gcr.io/heidless-pfolio-deploy/pfolio-frontend .
 
 ## create Serice
 -> deploy uploaded Container Registry
 -> i.e  NOT continuous deployment
 
+https://console.cloud.google.com/run?referrer=search&cloudshell=false&project=heidless-pfolio-deploy
+-
+'create service'
+
+-
 ```
+
+# link to app
+https://pfolio-frontend-v2xr7nz45q-nw.a.run.app/
 
 
 ### github secrets
