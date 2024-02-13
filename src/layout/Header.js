@@ -113,14 +113,20 @@ const Header = ({ onSidebarOpen }) => {
                             alignItems: 'center',
                             display: { lg: 'flex', md: 'none', xs: 'none' } 
                         }}
-                    >
+                    >  
                         <CustomButton 
-                            href='#home'
+                            // href='#home'
+                            href='/'
                             icon={<HomeIcon />}
                             text='Home'
                         />
                         <CustomButton 
-                            href='#about'
+                            href='/qual'
+                            icon={<ListIcon />}
+                            text='Qualifications'
+                        />
+                        <CustomButton 
+                            href='/#about'
                             icon={<InfoIcon />}
                             text='About'
                         />
