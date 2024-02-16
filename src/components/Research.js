@@ -65,7 +65,7 @@ const Research = () => {
                         marginTop={4}
                         marginBottom={6}
                     >
-                        Research Projects
+                        Research Topics
                     </Typography>
                 </Box>
                 <Grid container spacing={4}>
