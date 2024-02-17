@@ -54,7 +54,7 @@ const Projects = () => {
                         marginTop={theme.spacing(1)}
                         data-aos='fade-up'
                         gutterBottom   
-                    >
+                    >  
                         Projects
                     </Typography>
                     <Typography
