@@ -69,7 +69,7 @@ frontend-bucket-0
 
 ## push to repository
 ```
-gcloud builds submit --tag gcr.io/heidless-pfolio-deploy-8/pfolio-frontend-1   .
+gcloud builds submit --tag gcr.io/heidless-pfolio-deploy-8/pfolio-frontend-2   .
 
 ## create Serice
 -> deploy uploaded Container Registry
