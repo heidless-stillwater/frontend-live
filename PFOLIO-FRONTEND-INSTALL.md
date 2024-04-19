@@ -48,8 +48,8 @@ CMD ["npm", "start"]
 
 ### build | run
 ```
-docker build . -t pfolio-frontend
-docker run -p 3000:3000 -e=PORT=3000 pfolio-frontend
+docker build . -t pfolio-frontend-0
+docker run -p 3000:3000 -e=PORT=3000 pfolio-frontend-0
 ```
 
 ## storage bucket
@@ -69,13 +69,13 @@ frontend-bucket-0
 
 ## push to repository
 ```
-gcloud builds submit --tag gcr.io/heidless-pfolio-deploy/pfolio-frontend .
+gcloud builds submit --tag gcr.io/heidless-pfolio-deploy-8/pfolio-frontend-1   .
 
 ## create Serice
 -> deploy uploaded Container Registry
 -> i.e  NOT continuous deployment
 
-https://console.cloud.google.com/run?referrer=search&cloudshell=false&project=heidless-pfolio-deploy
+https://console.cloud.google.com/run?referrer=search&cloudshell=false&project=heidless-pfolio-deploy-8
 -
 'create service'
 
