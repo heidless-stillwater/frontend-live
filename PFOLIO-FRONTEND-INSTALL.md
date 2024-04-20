@@ -69,15 +69,13 @@ gsutil mb -l europe-west2 gs://$GCP_BUCKET
 
 ```
 gcloud init
---
-heidless-pfolio-deploy-9
---
+
 ```
 
 
 ## push to repository
 ```
-gcloud builds submit --tag gcr.io/heidless-pfolio-deploy-9/$GCP_APP_NAME .
+gcloud builds submit --tag gcr.io/$GCP_PROJECT/$GCP_APP_NAME .
 
 ## create Serice
 -> deploy uploaded Container Registry
