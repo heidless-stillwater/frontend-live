@@ -2,9 +2,6 @@
 # Deploy a React Web Application to Google Cloud
 https://www.youtube.com/watch?v=IjUnQ9kMnVo
 
-## Access app
-### https://pf-frontend-svc-0-tr6lwdigpa-ew.a.run.app
-
 ## setup
 
 ### package.json
@@ -46,36 +43,47 @@ RUN npm run build
 CMD ["npm", "start"]
 ```
 
+############################################
+# ENV
+```
+GCP_PROJECT=heidless-pfolio-deploy-9
+GCP_APP_NAME=pfolio-frontend-0
+GCP_BUCKET=$GCP_PROJECT-bucket
+
+```
+
 ### build | run
 ```
-docker build . -t pfolio-frontend-0
-docker run -p 3000:3000 -e=PORT=3000 pfolio-frontend-0
+docker build . -t $GCP_APP_NAME
+docker run -p 3000:3000 -e=PORT=3000 $GCP_APP_NAME
 ```
 
 ## storage bucket
 ```
-# project
-heidless-pfolio-deploy
+# initialise BUCKET
+gsutil mb -l europe-west2 gs://$GCP_BUCKET
 
-# storage bucket
-'Cloud Storage'
--
-frontend-bucket-0
--
 ```
-
 
 ## Cloud Run
 
+```
+gcloud init
+--
+heidless-pfolio-deploy-9
+--
+```
+
+
 ## push to repository
 ```
-gcloud builds submit --tag gcr.io/heidless-pfolio-deploy-8/pfolio-frontend-2   .
+gcloud builds submit --tag gcr.io/heidless-pfolio-deploy-9/$GCP_APP_NAME .
 
 ## create Serice
 -> deploy uploaded Container Registry
 -> i.e  NOT continuous deployment
 
-https://console.cloud.google.com/run?referrer=search&cloudshell=false&project=heidless-pfolio-deploy-8
+https://console.cloud.google.com/run?referrer=search&cloudshell=false&project=heidless-pfolio-deploy-9
 -
 'create service'
 

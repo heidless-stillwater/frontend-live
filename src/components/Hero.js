@@ -179,8 +179,8 @@ const Hero = () => {
                                         >
                                             <Box 
                                                 component={LazyLoadImage}
-                                                src='https://storage.cloud.google.com/heidless-pfolio-deploy-8-bucket-1/images/pfolio-frontend/background.png'
-                                                alt='Background Image'
+                                                src='https://storage.cloud.google.com/heidless-pfolio-deploy-9-bucket/images/pfolio-frontend/bg.png'
+                                                alt='pFolio Background Image'
                                                 effect='blur'
                                                 height={{ xs: 'auto', md: 1 }}
                                                 maxHeight={{ xs: 300, md: 1 }}
